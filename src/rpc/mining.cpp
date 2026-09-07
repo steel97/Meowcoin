@@ -785,9 +785,10 @@ static RPCHelpMan getblocktemplate()
     std::set<std::string> setClientRules;
     UniValue oparam{UniValue::VOBJ};
     if (request.params[0].isNull()) {
-        oparam.pushKV("rules", UniValue(UniValue::VARR));
-        oparam["rules"].push_back(UniValue("segwit"));
-        oparam["rules"].push_back(UniValue("taproot"));
+        UniValue rules(UniValue::VARR);
+        rules.push_back(UniValue("segwit"));
+        rules.push_back(UniValue("taproot"));
+        oparam.pushKV("rules", std::move(rules));
     } else {
         oparam = request.params[0].get_obj();
     }
